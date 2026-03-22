@@ -1,0 +1,216 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Fonts and Colors */
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    background-color: #fff8f5;
+    color: #333;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  /* Navbar */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #400000;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  
+  .nav-links li {
+    display: inline;
+    margin: 0 1rem;
+  }
+  
+  .nav-links a {
+    color: white;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #ffcccb;
+  }
+  
+  /* Hero Section */
+  .hero {
+    position: relative;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .slideshow-container {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+  
+  .mySlides {
+    display: none;
+  }
+  
+  .mySlides img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .hero-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+  }
+  
+  .hero-text h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-text p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    background-color: #800000;
+    color: white;
+    border-radius: 25px;
+    transition: background 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #a30000;
+  }
+  
+  /* Wine Section */
+  .wines-section {
+    padding: 4rem 2rem;
+    background-color: #fff0eb;
+    text-align: center;
+  }
+  
+  .wine-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .wine-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 250px;
+    transition: transform 0.3s ease;
+  }
+  
+  .wine-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .wine-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Testimonials */
+  .testimonials {
+    background: url('https://images.unsplash.com/photo-1600980242793-7c0c2f39b6f7?crop=entropy&cs=tinysrgb&fit=max&ixid=M3wzNjI0NXwwfDF8c2VhY2h8OXx8d2luZSUyMHdoaXRlJTIwd2luZXxlbnwwfHx8fDE2NDQ1ODQ0Mjg&ixlib=rb-1.2.1&q=80&w=1500') no-repeat center center/cover;
+    color: white;
+    position: relative;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  
+  .testimonials::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+  }
+  
+  .testimonials > * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .testimonial-box {
+    max-width: 600px;
+    margin: 1rem auto;
+    padding: 1rem;
+    font-style: italic;
+    background-color: rgba(255,255,255,0.1);
+    border-left: 5px solid #ffdddd;
+    border-radius: 5px;
+  }
+  
+  /* Contact Form */
+  .contact-form {
+    padding: 4rem 2rem;
+    text-align: center;
+    background-color: #fff8f5;
+  }
+  
+  .contact-form form {
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .contact-form button {
+    padding: 1rem;
+    background-color: #800000;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+  }
+  
+  .contact-form button:hover {
+    background-color: #a30000;
+  }
+  
+  /* Footer */
+  footer {
+    padding: 1rem;
+    background-color: #400000;
+    color: white;
+    text-align: center;
+  }
+  
