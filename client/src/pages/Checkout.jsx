@@ -5,11 +5,11 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import PaymentModal from '../components/PaymentModal';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://vino-delights-wine-shop.onrender.com/api';
 
 export default function Checkout() {
   const { cart, cartTotal, fetchCart } = useCart();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -17,7 +17,8 @@ export default function Checkout() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [pendingOrderId, setPendingOrderId] = useState(null);
   const [form, setForm] = useState({
-    fullName: '',
+    fullName: user?.name || '',
+    email: user?.email || '',
     street: '',
     city: '',
     state: '',
@@ -32,12 +33,62 @@ export default function Checkout() {
   const shippingCost = cartTotal >= 5000 ? 0 : 299;
   const totalAmount = cartTotal + shippingCost;
 
+  // Validation
+  const validateForm = () => {
+    // Full Name
+    if (form.fullName.trim().length < 2) {
+      setError('Please enter your full name');
+      return false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      setError('Please enter a valid email address');
+      return false;
+    }
+
+    // Street
+    if (form.street.trim().length < 5) {
+      setError('Please enter a valid street address (at least 5 characters)');
+      return false;
+    }
+
+    // City
+    if (form.city.trim().length < 2) {
+      setError('Please enter a valid city');
+      return false;
+    }
+
+    // State
+    if (form.state.trim().length < 2) {
+      setError('Please enter a valid state');
+      return false;
+    }
+
+    // Pincode - exactly 6 digits
+    const pincodeRegex = /^\d{6}$/;
+    if (!pincodeRegex.test(form.pincode.trim())) {
+      setError('Please enter a valid 6-digit pincode');
+      return false;
+    }
+
+    // Phone - 10 digits (with optional +91 prefix)
+    const cleanPhone = form.phone.replace(/[\s\-\+]/g, '');
+    const phoneRegex = /^(91)?[6-9]\d{9}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      setError('Please enter a valid 10-digit Indian phone number');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleOnlinePayment = async () => {
     setError('');
     setLoading(true);
 
     try {
-      // Create a dummy payment order on the server
       const { data } = await axios.post(`${API}/payment/create-order`, {
         shippingAddress: form
       }, {
@@ -93,6 +144,7 @@ export default function Checkout() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     if (paymentMethod === 'online') {
       await handleOnlinePayment();
     } else {
@@ -124,9 +176,15 @@ export default function Checkout() {
       <form onSubmit={handleSubmit}>
         <h3 style={{ color: 'var(--cream)', marginBottom: '24px', fontSize: '20px' }}>Shipping Address</h3>
 
-        <div className="form-group">
-          <label>Full Name</label>
-          <input name="fullName" value={form.fullName} onChange={handleChange} placeholder="John Doe" required />
+        <div className="form-row">
+          <div className="form-group">
+            <label>Full Name</label>
+            <input name="fullName" value={form.fullName} onChange={handleChange} placeholder="John Doe" required />
+          </div>
+          <div className="form-group">
+            <label>Email Address <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>(from your account)</span></label>
+            <input type="email" name="email" value={form.email} readOnly style={{ opacity: 0.7, cursor: 'not-allowed' }} />
+          </div>
         </div>
 
         <div className="form-group">
@@ -148,7 +206,7 @@ export default function Checkout() {
         <div className="form-row">
           <div className="form-group">
             <label>Pincode</label>
-            <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="400001" required />
+            <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="400001" maxLength="6" required />
           </div>
           <div className="form-group">
             <label>Phone Number</label>

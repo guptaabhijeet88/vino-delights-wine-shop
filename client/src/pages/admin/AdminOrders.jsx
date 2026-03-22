@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://vino-delights-wine-shop.onrender.com/api';
 const STATUSES = ['Processing', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
 
 export default function AdminOrders() {

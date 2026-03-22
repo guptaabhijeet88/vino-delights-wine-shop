@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import WineCard from '../components/WineCard';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://vino-delights-wine-shop.onrender.com/api';
 const categories = ['All', 'Red', 'White', 'Rosé', 'Sparkling', 'Dessert'];
 
 export default function Shop() {

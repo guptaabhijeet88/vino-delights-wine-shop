@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import WineCard from '../components/WineCard';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://vino-delights-wine-shop.onrender.com/api';
 
 export default function ProductDetail() {
   const { id } = useParams();

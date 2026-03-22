@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://vino-delights-wine-shop.onrender.com/api';
 
 export default function Orders() {
   const { token, user } = useAuth();

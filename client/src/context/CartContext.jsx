@@ -4,7 +4,7 @@ import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
-const API = 'http://localhost:5000/api';
+const API = 'https://vino-delights-wine-shop.onrender.com/api';
 
 export function CartProvider({ children }) {
   const { token, user } = useAuth();
