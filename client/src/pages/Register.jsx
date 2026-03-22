@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Register() {
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
@@ -38,6 +39,19 @@ export default function Register() {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+    try {
+      await googleLogin(credentialResponse.credential);
+      navigate('/shop');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Google sign-up failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -46,6 +60,22 @@ export default function Register() {
         <p className="auth-subtitle">Join the Vino Delights experience</p>
 
         {error && <div className="auth-error">{error}</div>}
+
+        <div className="google-login-wrapper">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError('Google sign-up failed')}
+            theme="filled_black"
+            size="large"
+            width="100%"
+            text="signup_with"
+            shape="pill"
+          />
+        </div>
+
+        <div className="auth-divider">
+          <span>or</span>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">

@@ -51,8 +51,16 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const googleLogin = async (credential) => {
+    const res = await axios.post(`${API}/auth/google`, { credential });
+    localStorage.setItem('vino_token', res.data.token);
+    setToken(res.data.token);
+    setUser(res.data.user);
+    return res.data;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, googleLogin }}>
       {children}
     </AuthContext.Provider>
   );

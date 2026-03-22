@@ -1532,6 +1532,33 @@ select {
   text-align: center;
 }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-divider span {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.google-login-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 /* ======= ORDERS PAGE ======= */
 .orders-page {
   padding-top: 120px;
