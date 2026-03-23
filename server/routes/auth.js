@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
+const Otp = require('../models/Otp');
 const { auth } = require('../middleware/auth');
 
 const router = express.Router();
@@ -34,9 +35,9 @@ function sendMailWithTimeout(mailOptions, timeoutMs = 20000) {
   // Always use Brevo REST API to bypass Render blocks
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => reject(new Error('Brevo REST API sending timed out after ' + timeoutMs + 'ms')), timeoutMs);
-    
+
     const apiKey = process.env.EMAIL_PASS;
-    
+
     const emailPayload = JSON.stringify({
       sender: {
         name: "Vino Delights 🍷",
@@ -83,9 +84,6 @@ function sendMailWithTimeout(mailOptions, timeoutMs = 20000) {
   });
 }
 
-// In-memory OTP store (email -> { otp, name, password, expiresAt })
-const otpStore = new Map();
-
 // Blocked disposable email domains
 const blockedDomains = [
   'mailinator.com', 'tempmail.com', 'guerrillamail.com', 'throwaway.email',
@@ -95,14 +93,6 @@ const blockedDomains = [
   'guerrillamailblock.com', 'grr.la', 'spam4.me', 'trash-mail.com',
   'jetable.org', 'minutemail.com', '10minutemail.com', 'tempr.email'
 ];
-
-// Clean expired OTPs every 10 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [email, data] of otpStore.entries()) {
-    if (data.expiresAt < now) otpStore.delete(email);
-  }
-}, 10 * 60 * 1000);
 
 // Step 1: Send OTP to email
 router.post('/send-otp', async (req, res) => {
@@ -140,13 +130,12 @@ router.post('/send-otp', async (req, res) => {
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Store OTP with user data (expires in 5 minutes)
-    otpStore.set(email.toLowerCase(), {
-      otp,
-      name,
-      password,
-      expiresAt: Date.now() + 5 * 60 * 1000,
-    });
+    // Store OTP in MongoDB (survives server restarts on Render)
+    await Otp.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { otp, name, password, expiresAt: new Date(Date.now() + 5 * 60 * 1000) },
+      { upsert: true, new: true }
+    );
 
     // Send OTP email (with timeout to prevent hanging on cloud servers)
     await sendMailWithTimeout({
@@ -198,13 +187,14 @@ router.post('/verify-otp', async (req, res) => {
   try {
     const { email, otp } = req.body;
 
-    const stored = otpStore.get(email.toLowerCase());
+    // Find OTP from MongoDB
+    const stored = await Otp.findOne({ email: email.toLowerCase() });
     if (!stored) {
       return res.status(400).json({ message: 'OTP expired or not found. Please request a new one.' });
     }
 
-    if (Date.now() > stored.expiresAt) {
-      otpStore.delete(email.toLowerCase());
+    if (new Date() > stored.expiresAt) {
+      await Otp.deleteOne({ email: email.toLowerCase() });
       return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
     }
 
@@ -215,7 +205,7 @@ router.post('/verify-otp', async (req, res) => {
     // OTP verified — create user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      otpStore.delete(email.toLowerCase());
+      await Otp.deleteOne({ email: email.toLowerCase() });
       return res.status(400).json({ message: 'User already exists with this email' });
     }
 
@@ -226,8 +216,8 @@ router.post('/verify-otp', async (req, res) => {
     });
     await user.save();
 
-    // Clean up OTP
-    otpStore.delete(email.toLowerCase());
+    // Clean up OTP from MongoDB
+    await Otp.deleteOne({ email: email.toLowerCase() });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
@@ -236,6 +226,7 @@ router.post('/verify-otp', async (req, res) => {
       user: { id: user._id, name: user.name, email: user.email, role: user.role }
     });
   } catch (error) {
+    console.error('❌ Verify OTP error:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
