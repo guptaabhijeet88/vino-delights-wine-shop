@@ -8,14 +8,34 @@ const { auth } = require('../middleware/auth');
 const router = express.Router();
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Email transporter
+// Email transporter — explicit SMTP config with timeouts (prevents hanging on Render)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 15000,
 });
+
+// Verify email transporter on startup (logs to Render console)
+transporter.verify()
+  .then(() => console.log('✅ Email transporter ready — Gmail credentials are valid'))
+  .catch((err) => console.error('❌ Email transporter NOT ready:', err.message, '| Code:', err.code));
+
+// Helper: sendMail with a hard timeout (prevents infinite hang)
+function sendMailWithTimeout(mailOptions, timeoutMs = 20000) {
+  return Promise.race([
+    transporter.sendMail(mailOptions),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Email sending timed out after ' + timeoutMs + 'ms')), timeoutMs)
+    ),
+  ]);
+}
 
 // In-memory OTP store (email -> { otp, name, password, expiresAt })
 const otpStore = new Map();
@@ -82,8 +102,8 @@ router.post('/send-otp', async (req, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000,
     });
 
-    // Send OTP email
-    await transporter.sendMail({
+    // Send OTP email (with timeout to prevent hanging on cloud servers)
+    await sendMailWithTimeout({
       from: `"Vino Delights 🍷" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: '🔐 Verify Your Email - Vino Delights',
@@ -108,8 +128,22 @@ router.post('/send-otp', async (req, res) => {
 
     res.json({ message: 'OTP sent to your email' });
   } catch (error) {
-    console.error('OTP send error:', error);
-    res.status(500).json({ message: 'Failed to send OTP. Please try again.', error: error.message });
+    console.error('❌ OTP send error:', {
+      message: error.message,
+      code: error.code,
+      responseCode: error.responseCode,
+      command: error.command,
+    });
+
+    // Provide a more specific error message
+    let userMessage = 'Failed to send OTP. Please try again.';
+    if (error.code === 'EAUTH') {
+      userMessage = 'Email service authentication failed. Please contact support.';
+    } else if (error.code === 'ESOCKET' || error.code === 'ECONNECTION') {
+      userMessage = 'Email service is temporarily unavailable. Please try again later.';
+    }
+
+    res.status(500).json({ message: userMessage, error: error.message });
   }
 });
 
