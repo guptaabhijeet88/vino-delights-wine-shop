@@ -31,66 +31,56 @@ const https = require('https');
 
 // Helper: sendMail with a hard timeout (prevents infinite hang)
 function sendMailWithTimeout(mailOptions, timeoutMs = 20000) {
-  // Check if we are using Brevo's SMTP server host, which tells us to route via REST API to avoid port blocks
-  if (process.env.SMTP_HOST && process.env.SMTP_HOST.includes('brevo')) {
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('Brevo REST API sending timed out after ' + timeoutMs + 'ms')), timeoutMs);
-      
-      const apiKey = process.env.EMAIL_PASS;
-      
-      const emailPayload = JSON.stringify({
-        sender: {
-          name: "Vino Delights 🍷",
-          email: process.env.EMAIL_FROM || process.env.EMAIL_USER
-        },
-        to: [{ email: mailOptions.to }],
-        subject: mailOptions.subject,
-        htmlContent: mailOptions.html
-      });
-
-      const reqOptions = {
-        hostname: 'api.brevo.com',
-        path: '/v3/smtp/email',
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'api-key': apiKey,
-          'content-type': 'application/json',
-          'content-length': Buffer.byteLength(emailPayload)
-        }
-      };
-
-      const req = https.request(reqOptions, (res) => {
-        let responseBody = '';
-        res.on('data', chunk => responseBody += chunk);
-        res.on('end', () => {
-          clearTimeout(timeout);
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            resolve(responseBody);
-          } else {
-            console.error('Brevo REST API Error:', responseBody);
-            reject(new Error('Brevo REST API Failed: ' + res.statusCode));
-          }
-        });
-      });
-
-      req.on('error', (e) => {
-        clearTimeout(timeout);
-        reject(e);
-      });
-
-      req.write(emailPayload);
-      req.end();
+  // Always use Brevo REST API to bypass Render blocks
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => reject(new Error('Brevo REST API sending timed out after ' + timeoutMs + 'ms')), timeoutMs);
+    
+    const apiKey = process.env.EMAIL_PASS;
+    
+    const emailPayload = JSON.stringify({
+      sender: {
+        name: "Vino Delights 🍷",
+        email: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'no-reply@vinodelights.com'
+      },
+      to: [{ email: mailOptions.to }],
+      subject: mailOptions.subject,
+      htmlContent: mailOptions.html
     });
-  }
 
-  // Fallback to regular Nodemailer transport for local host or other providers
-  return Promise.race([
-    transporter.sendMail(mailOptions),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Email sending timed out after ' + timeoutMs + 'ms')), timeoutMs)
-    ),
-  ]);
+    const reqOptions = {
+      hostname: 'api.brevo.com',
+      path: '/v3/smtp/email',
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': apiKey,
+        'content-type': 'application/json',
+        'content-length': Buffer.byteLength(emailPayload)
+      }
+    };
+
+    const req = https.request(reqOptions, (res) => {
+      let responseBody = '';
+      res.on('data', chunk => responseBody += chunk);
+      res.on('end', () => {
+        clearTimeout(timeout);
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(responseBody);
+        } else {
+          console.error('Brevo REST API Error:', responseBody);
+          reject(new Error('Brevo REST API Failed: ' + res.statusCode + ' - ' + responseBody));
+        }
+      });
+    });
+
+    req.on('error', (e) => {
+      clearTimeout(timeout);
+      reject(e);
+    });
+
+    req.write(emailPayload);
+    req.end();
+  });
 }
 
 // In-memory OTP store (email -> { otp, name, password, expiresAt })
