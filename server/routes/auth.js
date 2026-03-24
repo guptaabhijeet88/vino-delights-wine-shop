@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const Otp = require('../models/Otp');
+const PasswordResetOtp = require('../models/PasswordResetOtp');
 const { auth } = require('../middleware/auth');
 
 const router = express.Router();
@@ -332,6 +333,121 @@ router.post('/google', async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({ message: 'Google authentication failed', error: error.message });
+  }
+});
+
+// Forgot Password — send reset OTP
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Please enter a valid email address' });
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(400).json({ message: 'No account found with this email address' });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Store reset OTP in MongoDB
+    await PasswordResetOtp.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { otp, expiresAt: new Date(Date.now() + 5 * 60 * 1000) },
+      { upsert: true, new: true }
+    );
+
+    // Send OTP email via Brevo
+    await sendMailWithTimeout({
+      to: email,
+      subject: '🔑 Reset Your Password - Vino Delights',
+      html: `
+        <div style="max-width: 480px; margin: 0 auto; font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; border-radius: 16px; overflow: hidden;">
+          <div style="background: linear-gradient(135deg, #722f37, #4a1a20); padding: 32px; text-align: center;">
+            <h1 style="color: #f4e4c1; margin: 0; font-size: 28px;">🍷 Vino Delights</h1>
+            <p style="color: rgba(244, 228, 193, 0.7); margin: 8px 0 0; font-size: 14px;">Password Reset</p>
+          </div>
+          <div style="padding: 32px; text-align: center;">
+            <p style="color: #ccc; font-size: 15px; margin-bottom: 8px;">Hi <strong style="color: #f4e4c1;">${user.name}</strong>,</p>
+            <p style="color: #999; font-size: 14px; margin-bottom: 24px;">Use this code to reset your password:</p>
+            <div style="background: #2a2a4a; border: 2px solid #722f37; border-radius: 12px; padding: 20px; margin: 0 auto; display: inline-block;">
+              <span style="font-size: 36px; font-weight: 700; letter-spacing: 8px; color: #c5a572;">${otp}</span>
+            </div>
+            <p style="color: #666; font-size: 12px; margin-top: 24px;">This code expires in <strong style="color: #c5a572;">5 minutes</strong></p>
+            <p style="color: #555; font-size: 11px; margin-top: 16px;">If you didn't request this, please ignore this email. Your password will remain unchanged.</p>
+          </div>
+        </div>
+      `,
+    });
+
+    res.json({ message: 'Password reset OTP sent to your email' });
+  } catch (error) {
+    console.error('❌ Forgot password error:', error.message);
+
+    let userMessage = 'Failed to send reset OTP. Please try again.';
+    if (error.code === 'EAUTH') {
+      userMessage = 'Email service authentication failed. Please contact support.';
+    } else if (error.code === 'ESOCKET' || error.code === 'ECONNECTION') {
+      userMessage = 'Email service is temporarily unavailable. Please try again later.';
+    }
+
+    res.status(500).json({ message: userMessage });
+  }
+});
+
+// Reset Password — verify OTP and update password
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: 'Email, OTP, and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
+    // Find reset OTP from MongoDB
+    const stored = await PasswordResetOtp.findOne({ email: email.toLowerCase() });
+    if (!stored) {
+      return res.status(400).json({ message: 'OTP expired or not found. Please request a new one.' });
+    }
+
+    if (new Date() > stored.expiresAt) {
+      await PasswordResetOtp.deleteOne({ email: email.toLowerCase() });
+      return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
+    }
+
+    if (stored.otp !== otp) {
+      return res.status(400).json({ message: 'Invalid OTP. Please try again.' });
+    }
+
+    // Update user's password
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    user.password = newPassword; // Will be hashed by the pre-save hook
+    await user.save();
+
+    // Clean up the reset OTP
+    await PasswordResetOtp.deleteOne({ email: email.toLowerCase() });
+
+    res.json({ message: 'Password reset successfully. You can now sign in with your new password.' });
+  } catch (error) {
+    console.error('❌ Reset password error:', error.message);
+    res.status(500).json({ message: 'Server error. Please try again.' });
   }
 });
 

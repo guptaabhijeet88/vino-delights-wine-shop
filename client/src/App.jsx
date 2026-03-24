@@ -12,6 +12,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import Orders from './pages/Orders';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -56,6 +57,7 @@ function AppContent() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/orders" element={<Orders />} />
               </Routes>
