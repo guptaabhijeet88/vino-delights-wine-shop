@@ -4153,3 +4153,635 @@ option {
 .featured-toggle.active {
   opacity: 1;
 }
+
+/* ============================================================
+   MOBILE RESPONSIVE STYLES
+   All styles below are additive and do NOT affect desktop layout
+   ============================================================ */
+
+/* --- Hamburger Button (hidden on desktop) --- */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--cream);
+  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.nav-hamburger:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Mobile-only auth inside nav menu (hidden on desktop) */
+.nav-mobile-auth {
+  display: none;
+}
+
+/* Admin sidebar toggle (hidden on desktop) */
+.admin-menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--cream);
+  font-size: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-menu-toggle:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Admin sidebar overlay (hidden on desktop) */
+.admin-sidebar-overlay {
+  display: none;
+}
+
+/* Admin header-left layout */
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Desktop: hide hamburger, show normal auth */
+.nav-desktop-only {
+  display: inline-flex;
+}
+
+/* ============================================================
+   TABLET — max-width: 1024px
+   ============================================================ */
+@media (max-width: 1024px) {
+  /* Admin stat cards */
+  .stat-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Admin row */
+  .admin-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Admin form grid */
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-modal {
+    width: 90vw;
+  }
+
+  .admin-content {
+    padding: 24px 20px;
+  }
+
+  .admin-header {
+    padding: 16px 20px;
+  }
+}
+
+/* ============================================================
+   MOBILE — max-width: 768px
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* --- NAVBAR HAMBURGER MENU --- */
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .nav-desktop-only {
+    display: none !important;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    padding: 20px;
+    gap: 0;
+    z-index: 999;
+  }
+
+  .nav-links.nav-links-open {
+    display: flex;
+  }
+
+  .nav-links li {
+    list-style: none;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding: 14px 16px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 1px;
+  }
+
+  .nav-links li:last-child a {
+    border-bottom: none;
+  }
+
+  .nav-links li a:hover,
+  .nav-links li a.active {
+    color: var(--gold);
+    background: rgba(197, 165, 114, 0.05);
+  }
+
+  .nav-links li a::after {
+    display: none;
+  }
+
+  .nav-mobile-auth {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  /* --- ADMIN SIDEBAR (Drawer Overlay) --- */
+  .admin-menu-toggle {
+    display: flex;
+  }
+
+  .admin-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+  }
+
+  .admin-sidebar.admin-sidebar-open {
+    transform: translateX(0);
+  }
+
+  .admin-sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+
+  .admin-page-title {
+    font-size: 18px;
+  }
+
+  .admin-user-badge {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  /* --- ADMIN STAT CARDS --- */
+  .stat-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  /* --- ADMIN TABLE --- */
+  .admin-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-table {
+    min-width: 700px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  /* --- ADMIN TOOLBAR --- */
+  .admin-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-search {
+    width: 100%;
+  }
+
+  .admin-filter-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-filter-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* --- ADMIN ROW & CARDS --- */
+  .admin-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-card {
+    padding: 18px;
+  }
+
+  /* --- CHART BARS --- */
+  .chart-bars {
+    height: 140px;
+    gap: 6px;
+  }
+
+  /* --- ADMIN MODAL --- */
+  .admin-modal {
+    width: 95vw;
+    max-height: 90vh;
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-field.full {
+    grid-column: 1;
+  }
+
+  /* --- ORDERS PAGE (User-facing) --- */
+  .orders-page {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 100px;
+  }
+
+  .orders-page h1 {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .order-card {
+    padding: 18px;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* --- CART PAGE --- */
+  .cart-page {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 100px;
+  }
+
+  .cart-page h1 {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .cart-actions {
+    flex-direction: column;
+  }
+
+  .cart-actions .btn-primary,
+  .cart-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- CHECKOUT PAGE --- */
+  .checkout-page {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 100px;
+  }
+
+  .checkout-page h1 {
+    font-size: 28px;
+  }
+
+  /* --- PRODUCT DETAIL --- */
+  .product-detail {
+    padding-top: 100px;
+  }
+
+  .product-detail-container {
+    padding: 0 16px;
+    gap: 30px;
+  }
+
+  .product-detail-image {
+    height: 300px;
+  }
+
+  .product-detail-info h1 {
+    font-size: 28px;
+  }
+
+  .product-detail-price {
+    font-size: 28px;
+  }
+
+  .product-detail-actions {
+    flex-direction: column;
+  }
+
+  .product-detail-actions .btn-primary,
+  .product-detail-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- SHOP PAGE --- */
+  .shop-page {
+    padding-top: 100px;
+  }
+
+  .shop-filters {
+    padding: 0 16px;
+    gap: 10px;
+  }
+
+  .shop-grid {
+    padding: 0 16px;
+    padding-bottom: 60px;
+  }
+
+  .wine-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  /* --- AUTH PAGES --- */
+  .auth-page {
+    padding: 100px 16px 40px;
+  }
+
+  .auth-card {
+    padding: 28px 20px;
+  }
+
+  .auth-card h1 {
+    font-size: 26px;
+  }
+
+  .otp-inputs {
+    gap: 6px;
+  }
+
+  .otp-inputs input {
+    width: 40px;
+    height: 48px;
+    font-size: 18px;
+  }
+
+  /* --- NEWSLETTER --- */
+  .newsletter {
+    padding: 40px 16px;
+  }
+
+  .newsletter h2 {
+    font-size: 26px;
+  }
+
+  /* --- FOOTER --- */
+  .footer {
+    padding: 40px 16px 20px;
+  }
+
+  /* --- REVIEWS --- */
+  .reviews-section {
+    padding: 40px 16px;
+  }
+
+  /* --- AGE GATE --- */
+  .age-gate-card {
+    margin: 0 16px;
+    padding: 32px 20px;
+  }
+
+  .age-gate-card h2 {
+    font-size: 24px;
+  }
+
+  .age-gate-buttons {
+    flex-direction: column;
+  }
+
+  /* --- TOAST NOTIFICATIONS --- */
+  .toast-container {
+    right: 10px;
+    left: 10px;
+  }
+
+  .toast {
+    min-width: auto;
+  }
+}
+
+/* ============================================================
+   SMALL PHONE — max-width: 480px
+   ============================================================ */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero-badge {
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .hero-buttons {
+    width: 100%;
+  }
+
+  .hero-buttons .btn-primary,
+  .hero-buttons .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+  }
+
+  .wine-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wine-card-image {
+    height: 260px;
+  }
+
+  .wine-card-name {
+    font-size: 17px;
+  }
+
+  .wine-card-price {
+    font-size: 20px;
+  }
+
+  .stat-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 30px 16px;
+  }
+
+  .stat-number {
+    font-size: 26px;
+  }
+
+  .product-detail-image {
+    height: 240px;
+  }
+
+  .product-detail-info h1 {
+    font-size: 24px;
+  }
+
+  .cart-item-image {
+    height: 140px;
+  }
+
+  .cart-summary {
+    padding: 20px;
+  }
+
+  .admin-sidebar {
+    width: 240px;
+  }
+
+  .navbar {
+    height: 64px;
+  }
+
+  .navbar.scrolled {
+    height: 56px;
+  }
+
+  .nav-brand-text {
+    font-size: 18px;
+  }
+
+  .nav-brand-icon {
+    font-size: 22px;
+  }
+
+  .pm-modal {
+    width: 100vw !important;
+    border-radius: 16px 16px 0 0;
+    max-height: 95vh;
+  }
+
+  .pm-header {
+    padding: 16px 20px 12px;
+  }
+
+  .pm-body {
+    padding: 16px 20px;
+  }
+
+  .pm-amount-bar {
+    padding: 12px 20px;
+  }
+
+  .pm-tabs {
+    padding: 12px 16px;
+  }
+
+  .pm-tab {
+    font-size: 11px;
+    padding: 8px 6px;
+  }
+
+  .feature-item {
+    padding: 20px;
+  }
+
+  .feature-icon {
+    font-size: 28px;
+  }
+
+  .testimonial-card {
+    padding: 24px;
+  }
+
+  .review-card {
+    padding: 18px;
+  }
+
+  .review-form {
+    padding: 18px;
+  }
+
+  .review-form h3 {
+    font-size: 18px;
+  }
+
+  .wine-video-text h2 {
+    font-size: 22px;
+  }
+
+  .wine-video-text p {
+    font-size: 14px;
+  }
+}

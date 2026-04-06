@@ -1,15 +1,25 @@
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
 
 export default function AdminLayout() {
   const { user } = useAuth();
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   const isActive = (path) => location.pathname === path ? 'admin-nav-item active' : 'admin-nav-item';
 
   return (
     <div className="admin-layout">
-      <aside className="admin-sidebar">
+      {/* Mobile overlay */}
+      {sidebarOpen && <div className="admin-sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+
+      <aside className={`admin-sidebar ${sidebarOpen ? 'admin-sidebar-open' : ''}`}>
         <div className="admin-sidebar-header">
           <span className="admin-logo">🍷</span>
           <div>
@@ -47,12 +57,21 @@ export default function AdminLayout() {
 
       <main className="admin-main">
         <header className="admin-header">
-          <h2 className="admin-page-title">
-            {location.pathname === '/admin' && 'Dashboard Overview'}
-            {location.pathname === '/admin/products' && 'Product Management'}
-            {location.pathname === '/admin/orders' && 'Order Management'}
-            {location.pathname === '/admin/users' && 'User Management'}
-          </h2>
+          <div className="admin-header-left">
+            <button
+              className="admin-menu-toggle"
+              onClick={() => setSidebarOpen(prev => !prev)}
+              aria-label="Toggle sidebar"
+            >
+              ☰
+            </button>
+            <h2 className="admin-page-title">
+              {location.pathname === '/admin' && 'Dashboard Overview'}
+              {location.pathname === '/admin/products' && 'Product Management'}
+              {location.pathname === '/admin/orders' && 'Order Management'}
+              {location.pathname === '/admin/users' && 'User Management'}
+            </h2>
+          </div>
           <div className="admin-header-right">
             <span className="admin-user-badge">👑 {user?.name}</span>
           </div>
