@@ -87,6 +87,11 @@ select {
   outline: none;
 }
 
+option {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
 /* ======= SCROLLBAR ======= */
 ::-webkit-scrollbar {
   width: 8px;
@@ -3373,6 +3378,11 @@ select {
 .status-select:focus {
   border-color: var(--gold);
   outline: none;
+}
+
+.status-select option {
+  background-color: var(--bg-primary);
+  color: var(--cream);
 }
 
 .status-select.status-processing {
