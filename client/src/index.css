@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --bg-primary: #0a0a0a;
@@ -3661,7 +3661,7 @@ option {
   text-transform: uppercase;
 }
 
-/* ======= PRODUCT DETAIL — MRP & PRICING ======= */
+/* ======= PRODUCT DETAIL â€” MRP & PRICING ======= */
 .product-pricing {
   display: flex;
   align-items: center;
@@ -4084,7 +4084,7 @@ option {
   border-top: 1px solid var(--border);
 }
 
-/* ======= RESPONSIVE — NEW FEATURES ======= */
+/* ======= RESPONSIVE â€” NEW FEATURES ======= */
 @media (max-width: 768px) {
   .stats-section {
     grid-template-columns: repeat(2, 1fr);
@@ -4155,7 +4155,7 @@ option {
 }
 
 /* ============================================================
-   MOBILE RESPONSIVE STYLES
+   MOBILE RESPONSIVE STYLES â€” PROFESSIONAL POLISH
    All styles below are additive and do NOT affect desktop layout
    ============================================================ */
 
@@ -4166,18 +4166,20 @@ option {
   border: 1px solid var(--border);
   color: var(--cream);
   font-size: 22px;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .nav-hamburger:hover {
   border-color: var(--gold);
   color: var(--gold);
+  background: rgba(197, 165, 114, 0.08);
 }
 
 /* Mobile-only auth inside nav menu (hidden on desktop) */
@@ -4192,9 +4194,9 @@ option {
   border: 1px solid var(--border);
   color: var(--cream);
   font-size: 20px;
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -4218,26 +4220,23 @@ option {
   gap: 14px;
 }
 
-/* Desktop: hide hamburger, show normal auth */
+/* Desktop: show normal auth */
 .nav-desktop-only {
   display: inline-flex;
 }
 
 /* ============================================================
-   TABLET — max-width: 1024px
+   TABLET â€” max-width: 1024px
    ============================================================ */
 @media (max-width: 1024px) {
-  /* Admin stat cards */
   .stat-cards {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* Admin row */
   .admin-row {
     grid-template-columns: 1fr;
   }
 
-  /* Admin form grid */
   .admin-form-grid {
     grid-template-columns: 1fr;
   }
@@ -4253,14 +4252,62 @@ option {
   .admin-header {
     padding: 16px 20px;
   }
+
+  .navbar {
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 70px 24px;
+  }
+
+  .hero h1 {
+    font-size: 48px;
+  }
+
+  .features-strip {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 40px 24px;
+    gap: 16px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .product-detail-container {
+    grid-template-columns: 1fr;
+    padding: 0 24px;
+  }
+
+  .product-detail-image {
+    height: 420px;
+  }
+
+  .shop-filters {
+    padding: 0 24px;
+  }
+
+  .shop-grid {
+    padding: 0 24px;
+    padding-bottom: 60px;
+  }
+
+  .reviews-section {
+    padding: 60px 24px;
+  }
+
+  .related-products-section {
+    padding: 60px 24px;
+  }
 }
 
 /* ============================================================
-   MOBILE — max-width: 768px
+   MOBILE â€” max-width: 768px
    ============================================================ */
 @media (max-width: 768px) {
 
-  /* --- NAVBAR HAMBURGER MENU --- */
+  /* --- NAVBAR & HAMBURGER MENU --- */
   .nav-hamburger {
     display: flex;
   }
@@ -4269,19 +4316,32 @@ option {
     display: none !important;
   }
 
+  .navbar {
+    padding: 0 16px;
+    height: 68px;
+  }
+
+  .navbar.scrolled {
+    height: 60px;
+  }
+
+  .nav-brand-text {
+    font-size: 20px;
+  }
+
   .nav-links {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: rgba(10, 10, 10, 0.97);
-    backdrop-filter: blur(20px);
+    background: var(--bg-primary);
     border-bottom: 1px solid var(--border);
     flex-direction: column;
-    padding: 20px;
+    padding: 8px 0;
     gap: 0;
     z-index: 999;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
   }
 
   .nav-links.nav-links-open {
@@ -4293,22 +4353,28 @@ option {
   }
 
   .nav-links li a {
-    display: block;
-    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
     font-size: 15px;
+    font-weight: 500;
     color: var(--text-secondary);
-    border-bottom: 1px solid var(--border);
-    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: var(--transition);
   }
 
-  .nav-links li:last-child a {
+  .nav-links li:last-of-type a {
     border-bottom: none;
   }
 
   .nav-links li a:hover,
   .nav-links li a.active {
     color: var(--gold);
-    background: rgba(197, 165, 114, 0.05);
+    background: rgba(197, 165, 114, 0.06);
+    padding-left: 28px;
   }
 
   .nav-links li a::after {
@@ -4318,13 +4384,645 @@ option {
   .nav-mobile-auth {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
-    padding: 16px;
+    padding: 16px 24px;
     border-top: 1px solid var(--border);
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
-  /* --- ADMIN SIDEBAR (Drawer Overlay) --- */
+  .nav-mobile-auth .btn-login,
+  .nav-mobile-auth .btn-logout {
+    padding: 10px 28px;
+    font-size: 13px;
+  }
+
+  /* --- HERO SECTION --- */
+  .hero h1 {
+    font-size: 34px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero p {
+    font-size: 15px;
+    margin-bottom: 30px;
+  }
+
+  .hero-badge {
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 5px 16px;
+    margin-bottom: 20px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    gap: 12px;
+  }
+
+  .hero-buttons .btn-primary,
+  .hero-buttons .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+  }
+
+  /* --- WINE VIDEO --- */
+  .wine-video {
+    max-height: 60vh;
+  }
+
+  .wine-video-text h2 {
+    font-size: 26px;
+  }
+
+  .wine-video-text p {
+    font-size: 14px;
+  }
+
+  /* --- SECTIONS --- */
+  .section {
+    padding: 50px 16px;
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-header h2 {
+    font-size: 30px;
+  }
+
+  .section-header p {
+    font-size: 14px;
+  }
+
+  /* --- FEATURES STRIP --- */
+  .features-strip {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 30px 16px;
+    gap: 12px;
+  }
+
+  .feature-item {
+    padding: 18px 14px;
+  }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .feature-item h4 {
+    font-size: 12px;
+  }
+
+  .feature-item p {
+    font-size: 11px;
+  }
+
+  /* --- WINE GRID / CARDS --- */
+  .wine-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .wine-card-image {
+    height: 280px;
+  }
+
+  .wine-card-body {
+    padding: 16px 18px 20px;
+  }
+
+  .wine-card-name {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .wine-card-price {
+    font-size: 20px;
+  }
+
+  /* --- TESTIMONIALS --- */
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .testimonial-card {
+    padding: 24px;
+  }
+
+  .testimonial-text {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* --- STATS SECTION --- */
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 40px 16px;
+    gap: 12px;
+  }
+
+  .stat-item {
+    padding: 24px 14px;
+  }
+
+  .stat-number {
+    font-size: 30px;
+  }
+
+  .stat-item .stat-label {
+    font-size: 12px;
+  }
+
+  /* --- NEWSLETTER --- */
+  .newsletter {
+    padding: 40px 16px;
+  }
+
+  .newsletter h2 {
+    font-size: 26px;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .newsletter-form .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- FOOTER --- */
+  .footer {
+    padding: 36px 16px 20px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-brand p {
+    font-size: 13px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+  }
+
+  /* --- SHOP PAGE --- */
+  .shop-page {
+    padding-top: 100px;
+  }
+
+  .shop-filters {
+    padding: 0 16px;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .shop-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 8px 18px;
+    font-size: 12px;
+  }
+
+  .shop-search {
+    width: 100%;
+    min-width: 200px;
+    flex-shrink: 0;
+    order: -1;
+    font-size: 14px;
+  }
+
+  .shop-sort {
+    flex-shrink: 0;
+    min-width: 110px;
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+
+  .shop-grid {
+    padding: 0 16px;
+    padding-bottom: 50px;
+  }
+
+  /* --- PRODUCT DETAIL --- */
+  .product-detail {
+    padding-top: 90px;
+    padding-bottom: 40px;
+  }
+
+  .product-detail-container {
+    padding: 0 16px;
+    gap: 24px;
+  }
+
+  .product-detail-image {
+    height: 320px;
+    border-radius: 14px;
+  }
+
+  .back-link {
+    font-size: 14px;
+    padding: 8px 14px;
+    margin-bottom: 16px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+  }
+
+  .product-detail-info h1 {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .product-detail-category {
+    font-size: 10px;
+    padding: 4px 12px;
+    margin-bottom: 12px;
+  }
+
+  .product-detail-region {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .product-detail-price {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .product-detail-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .product-meta {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .product-meta-item {
+    padding: 10px 8px;
+  }
+
+  .product-meta-label {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+
+  .product-meta-value {
+    font-size: 13px;
+  }
+
+  .quantity-selector {
+    margin-bottom: 20px;
+  }
+
+  .qty-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .product-detail-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .product-detail-actions .btn-primary,
+  .product-detail-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .product-detail-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .product-pricing {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .product-rating-summary {
+    margin-bottom: 14px;
+  }
+
+  /* --- REVIEWS --- */
+  .reviews-section {
+    padding: 40px 16px;
+  }
+
+  .review-form {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .review-form h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .review-form-stars {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .review-card {
+    padding: 20px;
+  }
+
+  .review-card-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .review-title {
+    font-size: 16px;
+  }
+
+  .review-comment {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .related-products-section {
+    padding: 40px 16px;
+  }
+
+  /* --- CART PAGE --- */
+  .cart-page {
+    padding: 90px 16px 40px;
+  }
+
+  .cart-page h1 {
+    font-size: 26px;
+    margin-bottom: 24px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .cart-item-image {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px;
+  }
+
+  .cart-item-info {
+    width: 100%;
+  }
+
+  .cart-item-name {
+    font-size: 16px;
+  }
+
+  .cart-item-actions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .cart-summary {
+    padding: 20px;
+  }
+
+  .cart-summary-row {
+    font-size: 14px;
+  }
+
+  .cart-summary-row.total {
+    font-size: 18px;
+  }
+
+  .cart-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cart-actions .btn-primary,
+  .cart-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+  }
+
+  /* --- CHECKOUT PAGE --- */
+  .checkout-page {
+    padding: 90px 16px 40px;
+  }
+
+  .checkout-page h1 {
+    font-size: 26px;
+    margin-bottom: 28px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .checkout-summary {
+    padding: 18px;
+  }
+
+  /* --- ORDERS PAGE --- */
+  .orders-page {
+    padding: 90px 16px 40px;
+  }
+
+  .orders-page h1 {
+    font-size: 26px;
+    margin-bottom: 24px;
+  }
+
+  .order-card {
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+  }
+
+  .order-id {
+    font-size: 12px;
+  }
+
+  .order-item {
+    font-size: 13px;
+    padding: 6px 0;
+  }
+
+  .order-total {
+    font-size: 16px;
+  }
+
+  /* --- AUTH PAGES --- */
+  .auth-page {
+    padding: 90px 16px 30px;
+  }
+
+  .auth-card {
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
+
+  .auth-card h1 {
+    font-size: 26px;
+  }
+
+  .auth-card .auth-subtitle {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .otp-inputs {
+    gap: 6px;
+  }
+
+  .otp-inputs input {
+    width: 42px;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 8px;
+  }
+
+  .step-indicator {
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .step-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .step-label {
+    font-size: 10px;
+  }
+
+  /* --- AGE GATE --- */
+  .age-gate-card {
+    margin: 0 16px;
+    padding: 32px 20px;
+  }
+
+  .age-gate-card h2 {
+    font-size: 24px;
+  }
+
+  .age-gate-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .age-gate-buttons .btn-primary,
+  .age-gate-buttons .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- PAYMENT MODAL --- */
+  .pm-modal {
+    width: 95vw !important;
+    max-height: 90vh;
+  }
+
+  .pm-tabs {
+    gap: 4px;
+    padding: 12px 16px;
+  }
+
+  .pm-tab {
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+
+  .pm-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pm-field.full {
+    grid-column: 1;
+  }
+
+  .pm-card-preview {
+    padding: 20px;
+  }
+
+  .pm-card-number {
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .pm-banks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pm-body {
+    padding: 18px 20px;
+  }
+
+  .pm-header {
+    padding: 18px 20px 14px;
+  }
+
+  /* --- TOAST NOTIFICATIONS --- */
+  .toast-container {
+    right: 12px;
+    left: 12px;
+    top: 76px;
+  }
+
+  .toast {
+    min-width: auto;
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+
+  /* --- ADMIN LAYOUT --- */
   .admin-menu-toggle {
     display: flex;
   }
@@ -4345,41 +5043,52 @@ option {
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
     z-index: 999;
+    animation: pmFadeIn 0.2s ease;
   }
 
   .admin-main {
     margin-left: 0;
   }
 
+  .admin-header {
+    padding: 14px 16px;
+  }
+
   .admin-page-title {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .admin-user-badge {
     font-size: 11px;
-    padding: 6px 12px;
+    padding: 6px 10px;
+  }
+
+  .admin-content {
+    padding: 16px;
   }
 
   /* --- ADMIN STAT CARDS --- */
   .stat-cards {
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 
   .stat-card {
-    padding: 16px;
-    gap: 12px;
+    padding: 14px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .stat-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
     border-radius: 10px;
   }
 
   .stat-value {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .stat-label {
@@ -4390,10 +5099,12 @@ option {
   .admin-table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border);
+    border-radius: 10px;
   }
 
   .admin-table {
-    min-width: 700px;
+    min-width: 650px;
   }
 
   .admin-table th,
@@ -4406,10 +5117,13 @@ option {
   .admin-toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
 
   .admin-search {
     width: 100%;
+    font-size: 13px;
+    padding: 10px 16px;
   }
 
   .admin-filter-tabs {
@@ -4417,33 +5131,58 @@ option {
     flex-wrap: nowrap;
     padding-bottom: 4px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .admin-filter-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .admin-filter-tab {
     white-space: nowrap;
     flex-shrink: 0;
+    font-size: 11px;
+    padding: 6px 12px;
   }
 
   /* --- ADMIN ROW & CARDS --- */
   .admin-row {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
   }
 
   .admin-card {
-    padding: 18px;
+    padding: 16px;
+  }
+
+  .admin-card h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
   }
 
   /* --- CHART BARS --- */
   .chart-bars {
-    height: 140px;
-    gap: 6px;
+    height: 130px;
+    gap: 4px;
+  }
+
+  .chart-bar-label {
+    font-size: 9px;
   }
 
   /* --- ADMIN MODAL --- */
   .admin-modal {
     width: 95vw;
     max-height: 90vh;
+    border-radius: 14px;
+  }
+
+  .admin-modal-header {
+    padding: 18px;
+  }
+
+  .admin-modal-body {
+    padding: 18px;
   }
 
   .admin-form-grid {
@@ -4454,268 +5193,29 @@ option {
     grid-column: 1;
   }
 
-  /* --- ORDERS PAGE (User-facing) --- */
-  .orders-page {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 100px;
+  /* --- LOW STOCK --- */
+  .low-stock-item {
+    padding: 10px;
   }
 
-  .orders-page h1 {
-    font-size: 28px;
-    margin-bottom: 24px;
-  }
-
-  .order-card {
-    padding: 18px;
-  }
-
-  .order-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  /* --- CART PAGE --- */
-  .cart-page {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 100px;
-  }
-
-  .cart-page h1 {
-    font-size: 28px;
-    margin-bottom: 24px;
-  }
-
-  .cart-actions {
-    flex-direction: column;
-  }
-
-  .cart-actions .btn-primary,
-  .cart-actions .btn-secondary {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* --- CHECKOUT PAGE --- */
-  .checkout-page {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 100px;
-  }
-
-  .checkout-page h1 {
-    font-size: 28px;
-  }
-
-  /* --- PRODUCT DETAIL --- */
-  .product-detail {
-    padding-top: 100px;
-  }
-
-  .product-detail-container {
-    padding: 0 16px;
-    gap: 30px;
-  }
-
-  .product-detail-image {
-    height: 300px;
-  }
-
-  .product-detail-info h1 {
-    font-size: 28px;
-  }
-
-  .product-detail-price {
-    font-size: 28px;
-  }
-
-  .product-detail-actions {
-    flex-direction: column;
-  }
-
-  .product-detail-actions .btn-primary,
-  .product-detail-actions .btn-secondary {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* --- SHOP PAGE --- */
-  .shop-page {
-    padding-top: 100px;
-  }
-
-  .shop-filters {
-    padding: 0 16px;
-    gap: 10px;
-  }
-
-  .shop-grid {
-    padding: 0 16px;
-    padding-bottom: 60px;
-  }
-
-  .wine-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-
-  /* --- AUTH PAGES --- */
-  .auth-page {
-    padding: 100px 16px 40px;
-  }
-
-  .auth-card {
-    padding: 28px 20px;
-  }
-
-  .auth-card h1 {
-    font-size: 26px;
-  }
-
-  .otp-inputs {
-    gap: 6px;
-  }
-
-  .otp-inputs input {
-    width: 40px;
-    height: 48px;
-    font-size: 18px;
-  }
-
-  /* --- NEWSLETTER --- */
-  .newsletter {
-    padding: 40px 16px;
-  }
-
-  .newsletter h2 {
-    font-size: 26px;
-  }
-
-  /* --- FOOTER --- */
-  .footer {
-    padding: 40px 16px 20px;
-  }
-
-  /* --- REVIEWS --- */
-  .reviews-section {
-    padding: 40px 16px;
-  }
-
-  /* --- AGE GATE --- */
-  .age-gate-card {
-    margin: 0 16px;
-    padding: 32px 20px;
-  }
-
-  .age-gate-card h2 {
-    font-size: 24px;
-  }
-
-  .age-gate-buttons {
-    flex-direction: column;
-  }
-
-  /* --- TOAST NOTIFICATIONS --- */
-  .toast-container {
-    right: 10px;
-    left: 10px;
-  }
-
-  .toast {
-    min-width: auto;
+  .low-stock-name {
+    font-size: 12px;
   }
 }
 
 /* ============================================================
-   SMALL PHONE — max-width: 480px
+   SMALL PHONE â€” max-width: 480px
    ============================================================ */
 @media (max-width: 480px) {
-  .hero h1 {
-    font-size: 28px;
-  }
 
-  .hero-badge {
-    font-size: 10px;
-    letter-spacing: 2px;
-    padding: 4px 14px;
-  }
-
-  .hero p {
-    font-size: 14px;
-  }
-
-  .hero-buttons {
-    width: 100%;
-  }
-
-  .hero-buttons .btn-primary,
-  .hero-buttons .btn-secondary {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .section-header h2 {
-    font-size: 26px;
-  }
-
-  .wine-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .wine-card-image {
-    height: 260px;
-  }
-
-  .wine-card-name {
-    font-size: 17px;
-  }
-
-  .wine-card-price {
-    font-size: 20px;
-  }
-
-  .stat-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .stats-section {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 30px 16px;
-  }
-
-  .stat-number {
-    font-size: 26px;
-  }
-
-  .product-detail-image {
-    height: 240px;
-  }
-
-  .product-detail-info h1 {
-    font-size: 24px;
-  }
-
-  .cart-item-image {
-    height: 140px;
-  }
-
-  .cart-summary {
-    padding: 20px;
-  }
-
-  .admin-sidebar {
-    width: 240px;
-  }
-
+  /* --- NAVBAR --- */
   .navbar {
-    height: 64px;
+    height: 60px;
+    padding: 0 12px;
   }
 
   .navbar.scrolled {
-    height: 56px;
+    height: 54px;
   }
 
   .nav-brand-text {
@@ -4726,6 +5226,206 @@ option {
     font-size: 22px;
   }
 
+  .nav-hamburger {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .nav-links li a {
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+
+  /* --- HERO --- */
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .hero-badge {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    padding: 4px 12px;
+  }
+
+  /* --- SECTIONS --- */
+  .section {
+    padding: 40px 12px;
+  }
+
+  .section-header h2 {
+    font-size: 24px;
+  }
+
+  .section-header p {
+    font-size: 13px;
+  }
+
+  /* --- WINE GRID --- */
+  .wine-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .wine-card-image {
+    height: 240px;
+  }
+
+  .wine-card-body {
+    padding: 14px 16px 18px;
+  }
+
+  .wine-card-name {
+    font-size: 16px;
+  }
+
+  .wine-card-price {
+    font-size: 18px;
+  }
+
+  /* --- FEATURES STRIP --- */
+  .features-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 24px 12px;
+  }
+
+  .feature-item {
+    padding: 14px 10px;
+  }
+
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .feature-item h4 {
+    font-size: 11px;
+  }
+
+  .feature-item p {
+    font-size: 10px;
+    display: none;
+  }
+
+  /* --- STATS --- */
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 24px 12px;
+  }
+
+  .stat-item {
+    padding: 18px 10px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .stat-item .stat-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  /* --- STAT CARDS (Admin) --- */
+  .stat-cards {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .stat-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  /* --- PRODUCT DETAIL --- */
+  .product-detail-image {
+    height: 260px;
+  }
+
+  .product-detail-info h1 {
+    font-size: 22px;
+  }
+
+  .product-detail-price {
+    font-size: 24px;
+  }
+
+  .product-meta {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .product-meta-item {
+    padding: 8px 4px;
+  }
+
+  .product-meta-label {
+    font-size: 8px;
+  }
+
+  .product-meta-value {
+    font-size: 12px;
+  }
+
+  /* --- CART --- */
+  .cart-item-image {
+    height: 130px;
+  }
+
+  .cart-summary {
+    padding: 16px;
+  }
+
+  .cart-page h1,
+  .checkout-page h1,
+  .orders-page h1 {
+    font-size: 22px;
+  }
+
+  /* --- AUTH PAGES --- */
+  .auth-card {
+    padding: 24px 16px;
+  }
+
+  .auth-card h1 {
+    font-size: 24px;
+  }
+
+  .otp-inputs input {
+    width: 38px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  /* --- ADMIN SIDEBAR --- */
+  .admin-sidebar {
+    width: 240px;
+  }
+
+  .admin-sidebar-header {
+    padding: 20px 16px;
+  }
+
+  .admin-brand {
+    font-size: 18px;
+  }
+
+  .admin-page-title {
+    font-size: 14px;
+  }
+
+  /* --- PAYMENT MODAL --- */
   .pm-modal {
     width: 100vw !important;
     border-radius: 16px 16px 0 0;
@@ -4733,19 +5433,29 @@ option {
   }
 
   .pm-header {
-    padding: 16px 20px 12px;
+    padding: 14px 16px 10px;
+  }
+
+  .pm-title {
+    font-size: 16px;
   }
 
   .pm-body {
-    padding: 16px 20px;
+    padding: 14px 16px;
   }
 
   .pm-amount-bar {
-    padding: 12px 20px;
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  .pm-amount {
+    font-size: 20px;
   }
 
   .pm-tabs {
-    padding: 12px 16px;
+    padding: 10px 12px;
+    gap: 4px;
   }
 
   .pm-tab {
@@ -4753,35 +5463,79 @@ option {
     padding: 8px 6px;
   }
 
-  .feature-item {
-    padding: 20px;
+  .pm-pay-btn {
+    font-size: 14px;
+    padding: 14px;
   }
 
-  .feature-icon {
-    font-size: 28px;
-  }
-
+  /* --- TESTIMONIALS --- */
   .testimonial-card {
-    padding: 24px;
-  }
-
-  .review-card {
     padding: 18px;
   }
 
-  .review-form {
-    padding: 18px;
+  .testimonial-text {
+    font-size: 13px;
   }
 
-  .review-form h3 {
-    font-size: 18px;
-  }
-
-  .wine-video-text h2 {
+  /* --- NEWSLETTER --- */
+  .newsletter h2 {
     font-size: 22px;
   }
 
+  .newsletter p {
+    font-size: 13px;
+  }
+
+  /* --- REVIEWS --- */
+  .review-card {
+    padding: 16px;
+  }
+
+  .review-form {
+    padding: 16px;
+  }
+
+  .review-form h3 {
+    font-size: 16px;
+  }
+
+  .review-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  /* --- WINE VIDEO --- */
+  .wine-video-text h2 {
+    font-size: 20px;
+  }
+
   .wine-video-text p {
-    font-size: 14px;
+    font-size: 13px;
+    max-width: 300px;
+  }
+
+  .wine-video-badge {
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  /* --- TOAST --- */
+  .toast-container {
+    top: 68px;
+    right: 8px;
+    left: 8px;
+  }
+
+  .toast {
+    padding: 10px 14px;
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .toast-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
   }
 }
