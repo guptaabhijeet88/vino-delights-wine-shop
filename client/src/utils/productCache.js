@@ -15,6 +15,17 @@ function isCacheValid(entry) {
   return entry && entry.data && (Date.now() - entry.timestamp) < CACHE_DURATION;
 }
 
+// Preload product images into browser cache
+function preloadImages(products) {
+  if (!products || !products.length) return;
+  products.forEach(p => {
+    if (p.image) {
+      const img = new Image();
+      img.src = p.image;
+    }
+  });
+}
+
 // Warm up the cache on app load — fire and forget
 export function prefetchProducts() {
   // Prefetch all products
@@ -26,6 +37,8 @@ export function prefetchProducts() {
         const featured = res.data.filter(p => p.featured);
         if (featured.length > 0) {
           cache.featuredProducts = { data: featured, timestamp: Date.now() };
+          // Preload featured images immediately so they're ready before user scrolls
+          preloadImages(featured);
         }
       })
       .catch(() => {}); // silent fail — user will still get data on page load
@@ -75,6 +88,7 @@ export async function getCachedProducts(params = {}) {
   // Update relevant caches
   if (featured === 'true') {
     cache.featuredProducts = { data, timestamp: Date.now() };
+    preloadImages(data);
   } else if (category && category !== 'All' && !search && (!sort || sort === 'default')) {
     cache.categoryProducts[category] = { data, timestamp: Date.now() };
   } else if ((!category || category === 'All') && !search && (!sort || sort === 'default')) {

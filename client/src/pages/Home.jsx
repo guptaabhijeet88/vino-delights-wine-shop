@@ -203,7 +203,7 @@ export default function Home() {
         ) : (
           <div className="wine-grid">
             {featured.map(wine => (
-              <WineCard key={wine._id} wine={wine} />
+              <WineCard key={wine._id} wine={wine} eager />
             ))}
           </div>
         )}

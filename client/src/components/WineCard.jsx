@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
-export default function WineCard({ wine }) {
+export default function WineCard({ wine, eager = false }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { user } = useAuth();
@@ -62,7 +62,9 @@ export default function WineCard({ wine }) {
         <img
           src={wine.image}
           alt={wine.name}
-          loading="lazy"
+          loading={eager ? 'eager' : 'lazy'}
+          fetchpriority={eager ? 'high' : 'auto'}
+          decoding={eager ? 'sync' : 'async'}
           onLoad={() => setImageLoaded(true)}
           style={{ opacity: imageLoaded ? 1 : 0 }}
           onError={(e) => {
