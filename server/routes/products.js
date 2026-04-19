@@ -4,7 +4,7 @@ const { auth, adminAuth } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Get all products (with filters)
+// Get all products (with filters) — optimized with lean() and cache headers
 router.get('/', async (req, res) => {
   try {
     const { category, search, sort, minPrice, maxPrice, featured } = req.query;
@@ -38,18 +38,24 @@ router.get('/', async (req, res) => {
       default: sortOption = { featured: -1, createdAt: -1 };
     }
 
-    const products = await Product.find(query).sort(sortOption);
+    // .lean() returns plain JS objects instead of Mongoose documents — much faster
+    const products = await Product.find(query).sort(sortOption).lean();
+
+    // Cache response for 2 minutes (browser + CDN)
+    res.set('Cache-Control', 'public, max-age=120, stale-while-revalidate=300');
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
-// Get single product
+// Get single product — optimized with lean() and cache headers
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).lean();
     if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    res.set('Cache-Control', 'public, max-age=120, stale-while-revalidate=300');
     res.json(product);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });

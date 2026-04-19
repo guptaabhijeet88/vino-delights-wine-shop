@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { invalidateProductCache } from '../../utils/productCache';
 
 const API = 'https://vino-delights-wine-shop.onrender.com/api';
 
@@ -68,6 +69,7 @@ export default function AdminProducts() {
         toast.success('Product added successfully!');
       }
       setShowModal(false);
+      invalidateProductCache();
       fetchProducts();
     } catch (err) {
       toast.error(err.response?.data?.message || 'Error saving product');
@@ -81,6 +83,7 @@ export default function AdminProducts() {
     try {
       await axios.delete(`${API}/admin/products/${id}`, { headers });
       toast.success(`"${name}" deleted`);
+      invalidateProductCache();
       fetchProducts();
     } catch (err) {
       toast.error('Failed to delete');
@@ -93,6 +96,7 @@ export default function AdminProducts() {
         featured: !product.featured
       }, { headers });
       setProducts(prev => prev.map(p => p._id === product._id ? data : p));
+      invalidateProductCache();
       toast.success(data.featured ? `"${data.name}" added to featured!` : `"${data.name}" removed from featured`);
     } catch (err) {
       toast.error('Failed to update');

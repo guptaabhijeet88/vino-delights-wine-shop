@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import WineCard from '../components/WineCard';
+import { getCachedProducts } from '../utils/productCache';
 
 const API = 'https://vino-delights-wine-shop.onrender.com/api';
 
@@ -38,22 +39,26 @@ export default function ProductDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
-    axios.get(`${API}/products/${id}`)
+
+    // Fetch product and related products in parallel
+    const fetchProduct = axios.get(`${API}/products/${id}`);
+    
+    fetchProduct
       .then(res => {
         setProduct(res.data);
         // Check wishlist
         const saved = JSON.parse(localStorage.getItem('vino_wishlist') || '[]');
         setWishlisted(saved.includes(res.data._id));
-        // Fetch related products (same category)
-        return axios.get(`${API}/products?category=${res.data.category}`);
+        // Fetch related products from cache
+        return getCachedProducts({ category: res.data.category });
       })
-      .then(res => {
-        setRelatedProducts(res.data.filter(p => p._id !== id).slice(0, 4));
+      .then(data => {
+        setRelatedProducts(data.filter(p => p._id !== id).slice(0, 4));
       })
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
 
-    // Fetch reviews
+    // Fetch reviews in parallel
     fetchReviews();
   }, [id]);
 

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -19,6 +20,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminUsers from './pages/admin/AdminUsers';
+import { prefetchProducts } from './utils/productCache';
 import './index.css';
 
 function AdminRoute({ children }) {
@@ -29,6 +31,11 @@ function AdminRoute({ children }) {
 }
 
 function AppContent() {
+  // Prefetch products as soon as app loads — warms the cache
+  useEffect(() => {
+    prefetchProducts();
+  }, []);
+
   return (
     <CartProvider>
       <Toast />

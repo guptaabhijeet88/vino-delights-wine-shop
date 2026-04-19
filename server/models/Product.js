@@ -20,4 +20,12 @@ const productSchema = new mongoose.Schema({
   featured: { type: Boolean, default: false }
 }, { timestamps: true });
 
+// Indexes for faster queries
+productSchema.index({ category: 1, featured: -1, createdAt: -1 });
+productSchema.index({ featured: -1, createdAt: -1 });
+productSchema.index({ price: 1 });
+productSchema.index({ rating: -1 });
+productSchema.index({ name: 'text', description: 'text', region: 'text' });
+
 module.exports = mongoose.model('Product', productSchema);
+

@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import WineCard from '../components/WineCard';
-
-const API = 'https://vino-delights-wine-shop.onrender.com/api';
+import { SkeletonGrid } from '../components/SkeletonWineCard';
+import { getCachedProducts } from '../utils/productCache';
 
 // Animated counter hook
 function useCountUp(target, duration = 2000, startCounting = false) {
@@ -71,6 +70,7 @@ function StatItem({ icon, target, suffix, label }) {
 
 export default function Home() {
   const [featured, setFeatured] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [ageVerified, setAgeVerified] = useState(
     localStorage.getItem('vino_age_verified') === 'true'
   );
@@ -80,9 +80,16 @@ export default function Home() {
   const [newsletterRef, newsletterVisible] = useReveal();
 
   useEffect(() => {
-    axios.get(`${API}/products?featured=true`)
-      .then(res => setFeatured(res.data.slice(0, 8)))
-      .catch(err => console.error(err));
+    let cancelled = false;
+    getCachedProducts({ featured: 'true' })
+      .then(data => {
+        if (!cancelled) setFeatured(data.slice(0, 8));
+      })
+      .catch(err => console.error(err))
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
   }, []);
 
   const verifyAge = () => {
@@ -191,11 +198,15 @@ export default function Home() {
           <h2>Featured Wines</h2>
           <p>Hand-picked selections from the world's most celebrated vineyards</p>
         </div>
-        <div className="wine-grid">
-          {featured.map(wine => (
-            <WineCard key={wine._id} wine={wine} />
-          ))}
-        </div>
+        {loading ? (
+          <SkeletonGrid count={8} />
+        ) : (
+          <div className="wine-grid">
+            {featured.map(wine => (
+              <WineCard key={wine._id} wine={wine} />
+            ))}
+          </div>
+        )}
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
           <Link to="/shop" className="btn-secondary">View All Wines →</Link>
         </div>

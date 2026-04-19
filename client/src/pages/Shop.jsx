@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
 import WineCard from '../components/WineCard';
+import { SkeletonGrid } from '../components/SkeletonWineCard';
+import { getCachedProducts } from '../utils/productCache';
 
-const API = 'https://vino-delights-wine-shop.onrender.com/api';
 const categories = ['All', 'Red', 'White', 'Rosé', 'Sparkling', 'Dessert'];
 
 export default function Shop() {
@@ -13,25 +13,31 @@ export default function Shop() {
   const [category, setCategory] = useState(searchParams.get('category') || 'All');
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('default');
+  const prevRequest = useRef(0);
 
   useEffect(() => {
     fetchWines();
   }, [category, sort]);
 
   const fetchWines = async () => {
+    const requestId = ++prevRequest.current;
     try {
       setLoading(true);
-      const params = new URLSearchParams();
-      if (category !== 'All') params.append('category', category);
-      if (search) params.append('search', search);
-      if (sort !== 'default') params.append('sort', sort);
-
-      const res = await axios.get(`${API}/products?${params.toString()}`);
-      setWines(res.data);
+      const data = await getCachedProducts({
+        category: category !== 'All' ? category : undefined,
+        search: search || undefined,
+        sort: sort !== 'default' ? sort : undefined,
+      });
+      // Only update if this is still the latest request
+      if (requestId === prevRequest.current) {
+        setWines(data);
+      }
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      if (requestId === prevRequest.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -80,9 +86,7 @@ export default function Shop() {
 
       <div className="shop-grid">
         {loading ? (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-          </div>
+          <SkeletonGrid count={12} />
         ) : wines.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px', color: 'var(--text-muted)' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
