@@ -4068,8 +4068,8 @@ option {
 /* ======= SCROLL REVEAL ANIMATIONS ======= */
 .reveal-section {
   opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .reveal-section.revealed {
